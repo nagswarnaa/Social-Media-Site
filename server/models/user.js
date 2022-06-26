@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const bcrypt = require("bcryptjs")
 
 
 const newuserSchema = new mongoose.Schema({
@@ -23,10 +24,12 @@ async function deleteUser(id) {
 async function register(username, password) {
     const user = await getUserName(username)
     if (user) throw Error('User already exists')
+    const salt = await bcrypt.genSalt(10)
 
+    const hashed = await bcrypt.hash(password, salt)
     const neuser = await newUser.create({
         username: username,
-        password: password
+        password: hashed
     })
     return neuser
 }
@@ -39,7 +42,8 @@ async function updatePassword(id, password) {
 async function login(username, password) {
     const user = await getUserName(username)
     if (!user) throw Error('User not exists')
-    if (user.password != password) throw Error('wrong password')
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) throw Error('wrong password')
     return user
 }
 

@@ -1,10 +1,17 @@
 
 import './App.css';
+import MainContainer from './components/mainContainer';
+import NavBar from './components/navBar';
+import LoginForm from './components/loginPage';
+import RegistrationPage from './components/registrationPage';
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome</h1>
+      <NavBar />
+      <MainContainer />
+      <LoginForm />
+      <RegistrationPage />
     </div>
   );
 }

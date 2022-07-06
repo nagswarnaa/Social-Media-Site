@@ -19,7 +19,7 @@ async function getPostContent(postId) {
 }
 
 async function getAllPosts(createdby) {
-    return await newPost.find({ "createdby": createdby })
+    return await newPost.find()
 }
 
 async function deletePost(postId) {

@@ -4,19 +4,19 @@ import { useNavigate } from 'react-router-dom';
 
 const CreatePost = ({ currentuser, onCreate }) => {
   const [post, setPost] = useState({
-    posttitle: '',
+    posttype: '',
     postcontent: '',
-    createdby: ''
+    createdby: currentuser
   });
-  const { posttitle, postcontent, createdby } = post;
+  const { posttype, postcontent } = post;
   const onChange = (e) => setPost({ ...post, [e.target.name]: e.target.value });
 
 
-  return (<form>
+  return (<form onSubmit={() => onCreate(post)}>
     <h3>Create Post Component</h3>
     <div className="mx-auto w-25 p-3">
       <label htmlFor="username" className="form-label">Post Title</label>
-      <input type="posttitle" onChange={onChange} name="posttitle" value={posttitle} className="form-control" id="posttitle" aria-describedby="emailHelp" />
+      <input type="posttype" onChange={onChange} name="posttype" value={posttype} className="form-control" id="posttype" aria-describedby="emailHelp" />
     </div>
     <div className="mx-auto w-25 p-3">
       <label htmlFor="postcontent" className="form-label">Post Content</label>
@@ -26,7 +26,7 @@ const CreatePost = ({ currentuser, onCreate }) => {
       <label htmlFor="createdby" className="form-label">Created By</label>
       <input type="createdby" onChange={onChange} name="createdby" value={currentuser} disabled className="form-control" id="createdby" />
     </div>
-    <button type="submit" onClick={() => onCreate(post)} className="btn btn-primary ">Submit</button>
+    <button type="submit" className="btn btn-primary ">Submit</button>
   </form>);
 };
 

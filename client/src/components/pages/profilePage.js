@@ -4,16 +4,8 @@ import { fetchData } from '../../main'
 function Profile() {
     const [posts, setPosts] = useState([]);
     const userName = new URLSearchParams(window.location.search).get('user');
-    const retrievePosts = () => {
-        fetchData(`/post?user=${userName}`, {}, 'GET')
-            .then((data) => {
-                setPosts(data);
-            })
-            .catch((error) => {
-                console.log(`Error ${error.message}`)
-            });
-    };
-
+    const currentuser = JSON.parse(localStorage.presentuser);
+    console.log(currentuser);
     const onCreate = (newPost) => {
         fetchData(`/user/${userName}`, {}, 'GET')
             .then((user) => {
@@ -38,10 +30,18 @@ function Profile() {
 
         retrievePosts();
     }, [])
-
+    const retrievePosts = () => {
+        fetchData(`/post?user=${userName}`, {}, 'GET')
+            .then((data) => {
+                setPosts(data);
+            })
+            .catch((error) => {
+                console.log(`Error ${error.message}`)
+            });
+    };
 
     return (
-        <>
+        <div className="profile">
             <div className="mt-3">
                 <h1>Hello !! Welcome {userName}</h1>
             </div>
@@ -49,7 +49,7 @@ function Profile() {
             <CreatePost onCreate={onCreate} />
             <h4>List of {userName} Posts</h4>
             <PostsComponent list={posts}></PostsComponent>
-        </>
+        </div>
     );
 }
 

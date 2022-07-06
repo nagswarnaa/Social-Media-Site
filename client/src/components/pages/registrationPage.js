@@ -6,21 +6,23 @@ import { useNavigate } from 'react-router-dom';
 const RegistrationPage = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState({
-        userName: '',
-        Password: ''
+        username: '',
+        password: ''
     })
-    const { userName, Password } = user
+    const { username, password } = user
 
     const onChange = (e) => setUser({
         ...user, [e.target.name]: e.target.value
     })
     const onSubmit = (e) => {
+        console.log(e)
         e.preventDefault();
         fetchData('/user/register', {
-            userName,
-            Password
+            username,
+            password
         }, "POST").then((data) => {
             if (!data.message) {
+                localStorage.setItem('presentuser', JSON.stringify(data))
                 navigate("/profile")
             }
         }).catch((error) => {
@@ -30,31 +32,13 @@ const RegistrationPage = () => {
     return (<form onSubmit={onSubmit}>
         <h3>Registration Component</h3>
         <div className="mx-auto w-25 p-3">
-            <label htmlFor="userEmail" className="form-label">Email ID</label>
-            <input type="email" onChange={onChange} name="userName" className="form-control" id="userEmail" placeholder="Email" />
+            <label htmlFor="username" className="form-label">Email ID</label>
+            <input type="username" onChange={onChange} name="username" className="form-control" id="username" placeholder="username" />
         </div>
         <div className="mx-auto w-25 p-3">
             <label htmlFor="userPassword" className="form-label">Password</label>
-            <input type="password" onChange={onChange} name="Password" className="form-control" id="userPassword" placeholder="Password" />
+            <input type="password" onChange={onChange} name="password" className="form-control" id="password" placeholder="password" />
         </div>
-        <div className="mx-auto w-25 p-3">
-            <label htmlFor="userAddress" className="form-label">Address</label>
-            <input type="text" onChange={onChange} className="form-control" id="userAddress" placeholder="Street Address" />
-        </div>
-        <div className="mx-auto w-25 p-3">
-            <label htmlFor="Address" className="form-label">Address 2</label>
-            <input type="text" onChange={onChange} className="form-control" id="Address" placeholder="Suite,Apartment" />
-        </div>
-        <div className="mx-auto w-25 p-3">
-            <label htmlFor="userCity" className="form-label">City</label>
-            <input type="text" onChange={onChange} className="form-control" id="userCity" placeholder="City" />
-        </div>
-
-        <div className="mx-auto w-25 p-3">
-            <label htmlFor="Zipcode" className="form-label">Zip Code</label>
-            <input type="text" onChange={onChange} className="form-control" id="Zipcode" placeholder="Zip Code" />
-        </div>
-
         <div className="mx-auto w-25 p-3">
             <button type="submit" className="btn btn-primary">Register</button>
         </div>

@@ -16,7 +16,7 @@ router
 
     .post('/create', async (req, res) => {
         try {
-            const newpost = await feedPost.createPost(req.body.posttype, req.body.postcontent)
+            const newpost = await feedPost.createPost(req.body.posttype, req.body.postcontent, req.body.createdby)
             res.send({ ...newpost })
         }
         catch (error) {

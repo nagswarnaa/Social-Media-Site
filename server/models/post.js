@@ -3,7 +3,12 @@ const mongoose = require("mongoose")
 
 const postSchema = new mongoose.Schema({
     posttype: String,
-    postcontent: { type: String, required: true, unique: true }
+    postcontent: { type: String, required: true, unique: true },
+    createdby: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'newUser'
+    }
 })
 
 const newPost = mongoose.model("newPost", postSchema)
@@ -17,10 +22,11 @@ async function deletePost(postId) {
     await newPost.deleteOne({ "_id": postId })
 }
 
-async function createPost(posttype, postcontent) {
+async function createPost(posttype, postcontent, createdby) {
     const newUserPost = await newPost.create({
         posttype: posttype,
-        postcontent: postcontent
+        postcontent: postcontent,
+        createdby: createdby
     })
     return newUserPost
 }

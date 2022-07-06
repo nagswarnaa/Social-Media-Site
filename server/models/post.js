@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema({
     posttype: String,
     postcontent: { type: String, required: true, unique: true },
     createdby: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: true,
         ref: 'newUser'
     }
@@ -18,8 +18,12 @@ async function getPostContent(postId) {
     return await newPost.findOne({ "_id": postId })
 }
 
+async function getAllPosts(createdby) {
+    return await newPost.find({ "createdby": createdby })
+}
+
 async function deletePost(postId) {
-    await newPost.deleteOne({ "_id": postId })
+    await newPost.deleteOne({ "_id": postId });
 }
 
 async function createPost(posttype, postcontent, createdby) {
@@ -39,5 +43,5 @@ async function updatePost(postId, postcontent) {
 
 
 module.exports = {
-    getPostContent, updatePost, createPost, deletePost
+    getPostContent, updatePost, createPost, deletePost, getAllPosts
 }

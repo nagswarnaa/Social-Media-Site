@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const LoginForm = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState({
-        userName: '',
-        Password: ''
+        username: '',
+        password: ''
     })
-    const { userName, Password } = user
+    const { username, password } = user
 
     const onChange = (e) => setUser({
         ...user, [e.target.name]: e.target.value
@@ -17,10 +17,12 @@ const LoginForm = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         fetchData('/user/login', {
-            userName,
-            Password
+            username,
+            password
         }, "POST").then((data) => {
             if (!data.message) {
+                console.log(data)
+                localStorage.setItem('username', JSON.stringify(data._doc.username))
                 navigate("/profile")
             }
         }).catch((error) => {
@@ -29,15 +31,15 @@ const LoginForm = () => {
     }
     return (<form onSubmit={onSubmit}>
         <h3>Login Component</h3>
-        <div class="mx-auto w-25 p-3">
-            <label for="username" class="form-label">User Name</label>
-            <input type="username" onChange={onChange} name="userName" class="form-control" id="username" aria-describedby="emailHelp" />
+        <div className="mx-auto w-25 p-3">
+            <label htmlFor="username" className="form-label">User Name</label>
+            <input type="username" onChange={onChange} name="username" className="form-control" id="username" aria-describedby="emailHelp" />
         </div>
-        <div class="mx-auto w-25 p-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" onChange={onChange} name="Password" class="form-control" id="password" />
+        <div className="mx-auto w-25 p-3">
+            <label htmlFor="password" className="form-label">Password</label>
+            <input type="password" onChange={onChange} name="password" className="form-control" id="password" />
         </div>
-        <button type="submit" class="btn btn-primary ">Submit</button>
+        <button type="submit" className="btn btn-primary ">Submit</button>
     </form>);
 }
 export default LoginForm;

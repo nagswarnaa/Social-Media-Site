@@ -1,23 +1,47 @@
 import { useState } from 'react';
+import { fetchData } from '../main';
+import { useNavigate } from 'react-router-dom';
+
 const CreatePost = ({ onCreate }) => {
+  const navigate = useNavigate()
   const [post, setPost] = useState({
-    type: '',
-    content: '',
+    posttitle: '',
+    postcontent: '',
+    createdby: ''
   });
-  const { title, body } = post;
+  const { posttitle, postcontent, createdby } = post;
   const onChange = (e) => setPost({ ...post, [e.target.name]: e.target.value });
 
-  return (<form onSubmit={() => CreatePost(post)}>
+  const onSubmit = (e) => {
+    e.preventDefault();
+    fetchData('/post/create', {
+      posttitle,
+      postcontent,
+      createdby
+    }, "POST").then((data) => {
+      if (!data.message) {
+        console.log("Post created succesfully")
+        navigate("/profile")
+      }
+    }).catch((error) => {
+      console.log(`Error ${error.message}`)
+    })
+  }
+  return (<form onSubmit={onSubmit}>
     <h3>Create Post Component</h3>
-    <div class="mx-auto w-25 p-3">
-      <label for="username" class="form-label">Post Title</label>
-      <input type="post" onChange={onChange} name="type" class="form-control" id="post" aria-describedby="emailHelp" />
+    <div className="mx-auto w-25 p-3">
+      <label htmlFor="username" className="form-label">Post Title</label>
+      <input type="posttitle" onChange={onChange} name="posttitle" className="form-control" id="posttitle" aria-describedby="emailHelp" />
     </div>
-    <div class="mx-auto w-25 p-3">
-      <label for="password" class="form-label">Post Content</label>
-      <input type="password" onChange={onChange} name="content" class="form-control" id="password" />
+    <div className="mx-auto w-25 p-3">
+      <label htmlFor="postcontent" className="form-label">Post Content</label>
+      <input type="postcontent" onChange={onChange} name="postcontent" className="form-control" id="postcontent" />
     </div>
-    <button type="submit" class="btn btn-primary ">Submit</button>
+    <div className="mx-auto w-25 p-3">
+      <label htmlFor="createdby" className="form-label">Created By</label>
+      <input type="createdby" onChange={onChange} name="createdby" className="form-control" id="createdby" />
+    </div>
+    <button type="submit" className="btn btn-primary ">Submit</button>
   </form>);
 };
 

@@ -22,7 +22,7 @@ const RegistrationPage = () => {
             password
         }, "POST").then((data) => {
             if (!data.message) {
-                localStorage.setItem('presentuser', JSON.stringify(data))
+                localStorage.setItem('username', JSON.stringify(data._doc.username))
                 navigate("/profile")
             }
         }).catch((error) => {

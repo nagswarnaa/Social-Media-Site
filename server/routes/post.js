@@ -6,8 +6,8 @@ const router = express.Router()
 router
     .get('/getpost', async (req, res) => {
         try {
-            const newpost = await feedPost.getPostContent(req.body.postId)
-            res.send({ ...newpost })
+            const posts = await feedPost.getAllPosts(req.body.createdby)
+            res.send({ ...posts })
         }
         catch (error) {
             res.status(401).send({ message: error.message })

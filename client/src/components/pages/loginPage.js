@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { useState } from 'react';
 import { fetchData } from '../../main';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../navBar';
 
 const LoginForm = () => {
     const navigate = useNavigate()
@@ -30,6 +31,7 @@ const LoginForm = () => {
         })
     }
     return (<form onSubmit={onSubmit}>
+        <NavBar />
         <h3>Login Component</h3>
         <div className="mx-auto w-25 p-3">
             <label htmlFor="username" className="form-label">User Name</label>

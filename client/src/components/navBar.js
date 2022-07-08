@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 const NavBar = () => {
+    const navigate = useNavigate()
+    const logOut = () => {
+        localStorage.clear();
+        navigate("/login")
+    }
+    const currentuser = JSON.parse(localStorage.getItem('username'));
+    let loggedIn = !currentuser;
+
     return (<nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
             <Link className="navbar-brand" to="/">UserInterface Project</Link>
@@ -12,14 +22,22 @@ const NavBar = () => {
                     <li className="nav-item">
                         <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                     </li>
-
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/login">LoginPage</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/register">RegisterPage</Link>
-                    </li>
-
+                    {loggedIn &&
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/login" >LoginPage</Link>
+                        </li>}
+                    {loggedIn &&
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/register">RegisterPage</Link>
+                        </li>}
+                    {!loggedIn &&
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/profile" >ProfilePage</Link>
+                        </li>}
+                    {!loggedIn &&
+                        <li className="nav-item">
+                            <button type="button" className="btn btn-light nav-link" onClick={logOut}>Logout</button>
+                        </li>}
                 </ul>
             </div>
             <Outlet></Outlet>

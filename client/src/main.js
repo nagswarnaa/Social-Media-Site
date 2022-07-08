@@ -6,7 +6,7 @@ export async function fetchData(route = '', data = {}, methodType) {
             'Content-Type': 'application/json',
         },
     };
-    if (methodType == 'POST') {
+    if (methodType == 'POST' || methodType == 'DELETE') {
         req['body'] = JSON.stringify(data);
     }
     const response = await fetch(`http://localhost:5000${route}`, req);

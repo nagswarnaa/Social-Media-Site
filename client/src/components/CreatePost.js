@@ -13,6 +13,7 @@ const CreatePost = ({ currentuser, onCreate }) => {
 
 
   return (<form onSubmit={() => onCreate(post)}>
+
     <h3>Create Post Component</h3>
     <div className="mx-auto w-25 p-3">
       <label htmlFor="username" className="form-label">Post Title</label>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { useState } from 'react';
 import { fetchData } from '../../main';
 import { useNavigate } from 'react-router-dom';
+import NavBar from '../navBar';
 
 const RegistrationPage = () => {
     const navigate = useNavigate()
@@ -30,6 +31,7 @@ const RegistrationPage = () => {
         })
     }
     return (<form onSubmit={onSubmit}>
+        <NavBar />
         <h3>Registration Component</h3>
         <div className="mx-auto w-25 p-3">
             <label htmlFor="username" className="form-label">Email ID</label>

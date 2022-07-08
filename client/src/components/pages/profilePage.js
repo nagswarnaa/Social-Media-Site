@@ -1,10 +1,26 @@
 import CreatePost from "../CreatePost";
 import { useEffect, useState } from 'react';
 import { fetchData } from '../../main'
+import PostList from "../postList";
+import NavBar from "../navBar";
+
+
+
 function Profile() {
     const currentuser = JSON.parse(localStorage.getItem('username'));
 
     const [posts, updatePosts] = useState([]);
+    const deletePost = (id) => {
+        fetchData('/post/delete', {
+            postId: id
+        }, "DELETE")
+            .then(() => {
+                fetchPosts();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
     const addPost = (post) => {
         console.log(post)
         fetchData('/post/create', {
@@ -14,7 +30,6 @@ function Profile() {
         }, "POST")
             .then((newpost) => {
                 updatePosts((prevData) => [...prevData, newpost]);
-
             })
             .catch((err) => {
                 console.error(err);
@@ -24,8 +39,9 @@ function Profile() {
     const fetchPosts = () => {
         fetchData(`/post/getpost`, {}, 'GET')
             .then((posts) => {
-                console.log(posts)
-                updatePosts(posts)
+                let allPosts = Object.values(posts)
+                let newData = allPosts.filter(item => item.createdby == currentuser)
+                updatePosts(newData);
             })
             .catch((error) => {
                 console.error(error);
@@ -39,33 +55,19 @@ function Profile() {
     return (
 
         < div className="profile" >
+            <NavBar />
             <h1>Welcome {currentuser} </h1>
-            <PostList posts={Array.from(posts)} />
+            <h3>List of Posts </h3>
+            <PostList posts={posts ? posts : []} onDelete={deletePost} />
             <CreatePost currentuser={currentuser} onCreate={addPost} />
 
         </div >
     );
 }
 
-const PostList = ({ posts }) => (
-    <ul className='list-group'>
-        {posts.map(post => (
-            <li key={post._id} className='list-group-item'>
-                <PostComponent post={post} />
-            </li>
-        ))}
-    </ul>
-);
 
-const PostComponent = ({ post }) => {
-    return (
-        <div className="post">
-            <h6>{post.posttype}</h6>
-            <p>{post.postcontent}</p>
-            <h6>{post.createdby}</h6>
-        </div>
-    );
-}
+
+
 
 
 export default Profile;
